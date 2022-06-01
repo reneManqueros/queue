@@ -29,3 +29,12 @@ func (q *Queue) ClearHash(hash string) {
 	defer q.Mutex.Unlock()
 	delete(q.Hashes, hash)
 }
+
+func (q *Queue) GetUniqueHash() string {
+	hash := q.GetHash()
+	for q.HashExists(hash) == true {
+		hash = q.GetHash()
+	}
+	q.SetHash(hash)
+	return hash
+}
